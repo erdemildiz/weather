@@ -1,0 +1,17 @@
+/* 
+  Localizable.strings
+  weather
+
+  Created by Erdem ILDIZ on 15.08.2020.
+  Copyright © 2020 Erdem ILDIZ. All rights reserved.
+*/
+"main_page" = "Ana Sayfa";
+"cities"    = "Şehirler";
+
+// Weather Page
+"weather_page_title" = "Hava Durumu";
+
+// Cities Page
+"city_list_page_title" = "Şehirler";
+
+
