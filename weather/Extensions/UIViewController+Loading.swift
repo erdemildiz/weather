@@ -12,7 +12,8 @@ import SnapKit
 class CustomViewController: UIViewController {
     
     lazy var loading: UIActivityIndicatorView = {
-        let loading = UIActivityIndicatorView()
+        let loading = UIActivityIndicatorView(style: .gray)
+        loading.layer.zPosition = 999
         return loading
     }()
     
@@ -25,11 +26,10 @@ class CustomViewController: UIViewController {
     fileprivate func setupLoading() {
         view.addSubview(loading)
         loading.snp.makeConstraints({ (make) in
-            make.width.equalToSuperview()
-            make.height.equalToSuperview()
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview()
         })
+        
     }
     
     func showLoading(){

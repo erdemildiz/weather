@@ -1,5 +1,5 @@
 //
-//  WeatherOverViewModel.swift
+//  CitySelectionModel.swift
 //  weather
 //
 //  Created by Erdem ILDIZ on 15.08.2020.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct CityModel: Codable {
-    let id: Int
-    let name: String
+struct CitySelectionModel {
+    let letter: Character
+    let cities: [CityModel]
 }

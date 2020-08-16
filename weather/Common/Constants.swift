@@ -18,4 +18,8 @@ struct Constants {
     
     // Cities page
     static let cityListPageTitle = NSLocalizedString("city_list_page_title", comment: "")
+    
+    // Commons strings
+    static let edit              = NSLocalizedString("edit", comment: "")
+    static let done              = NSLocalizedString("done", comment: "")
 }

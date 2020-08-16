@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias error = (Error) -> Void
+typealias error = (String) -> Void
 
 struct AsyncFetch {
     
@@ -23,7 +23,7 @@ struct AsyncFetch {
                     success(responceData)
                 } catch  {
                     print("Error: \(error.localizedDescription)")
-                    failure(error)
+                    failure(error.localizedDescription)
                 }
                 
             }

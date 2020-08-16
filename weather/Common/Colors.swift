@@ -6,4 +6,10 @@
 //  Copyright © 2020 Erdem ILDIZ. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+struct Colors {
+    
+    static let purplyBlue = UIColor(named: "purplyBlue")
+    static let slate      = UIColor(named: "slate")
+}

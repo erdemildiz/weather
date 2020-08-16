@@ -15,3 +15,7 @@
 
 // Cities Page
 "city_list_page_title" = "Cities";
+
+// Common
+"edit" = "Edit";
+"done" = "Done";

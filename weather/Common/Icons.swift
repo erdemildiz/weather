@@ -10,8 +10,10 @@ import UIKit
 
 struct Icons {
     // Tabbar Items
-    static let firstTabbarActiveIcon   = UIImage(named: "firsttabbar_active")
-    static let firstTabbarPassiveIcon  = UIImage(named: "firsttabbar_passive")
-    static let secondTabbarActiveIcon  = UIImage(named: "secondtabbar_active")
-    static let secondTabbarPassiveIcon = UIImage(named: "secondtabbar_passive")
+    static let firstTabbarActiveIcon   = UIImage(named: "firsttabbar_active")?.withRenderingMode(.alwaysOriginal)
+    static let firstTabbarPassiveIcon  = UIImage(named: "firsttabbar_passive")?.withRenderingMode(.alwaysOriginal)
+    static let secondTabbarActiveIcon  = UIImage(named: "secondtabbar_active")?.withRenderingMode(.alwaysOriginal)
+    static let secondTabbarPassiveIcon = UIImage(named: "secondtabbar_passive")?.withRenderingMode(.alwaysOriginal)
+    static let plus                    = UIImage(named: "plus")?.withRenderingMode(.alwaysOriginal)
+    static let leftBtn                 = UIImage(named: "leftBtn")?.withRenderingMode(.alwaysOriginal)
 }
