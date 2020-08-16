@@ -20,7 +20,7 @@ struct UserDefault<T> {
     }
     
     var wrappedValue: T {
-        get {
+        get {            
             return UserDefaults.standard.object(forKey: key) as? T ?? value
         }
         set {

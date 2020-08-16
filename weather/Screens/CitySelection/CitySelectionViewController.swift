@@ -29,8 +29,8 @@ class CitySelectionViewController: CustomViewController {
     let viewModel = CitySelectionViewModel()
     var selectedCity: CityModel?
     
-    @UserDefault("registered_cities", value: [String]())
-    var registeredCities: [String]?
+    @UserDefault("registered_city_ids", value: [Int]())
+    var registeredCityIds: [Int]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,11 +107,11 @@ class CitySelectionViewController: CustomViewController {
         guard viewModel.cities.count > 0 else { return }
         let selectedCityModel = viewModel.cities[Int(section)!].cities[row]
         
-        guard let registeredCities = registeredCities else { return }
-        if registeredCities.count > 0 {
-            self.registeredCities = registeredCities + [selectedCityModel.name]
+        guard let registeredCityIds = self.registeredCityIds else { return }
+        if registeredCityIds.count > 0 {
+            self.registeredCityIds = registeredCityIds + [selectedCityModel.id]
         } else {
-            self.registeredCities = [selectedCityModel.name]
+            self.registeredCityIds = [selectedCityModel.id]
         }
         cityList.reloadData()
     }
@@ -127,10 +127,6 @@ extension CitySelectionViewController: UISearchBarDelegate, UITextFieldDelegate 
         } else {
             viewModel.resetFilter()
         }
-    }
-    
-    func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        return true
     }
     
 }
@@ -158,7 +154,7 @@ extension CitySelectionViewController: UITableViewDelegate, UITableViewDataSourc
         let selectedCity = viewModel.cities[indexPath.section].cities[indexPath.row]
         cell.textLabel?.text = selectedCity.name
         
-        if !(self.registeredCities?.contains(selectedCity.name) ?? false) {
+        if !(self.registeredCityIds?.contains(selectedCity.id) ?? false) {
             let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 20))
             let attributedString = NSAttributedString(string: "Ekle", attributes: [
                     .font: UIFont.robotoMedium(fontSize: 14),

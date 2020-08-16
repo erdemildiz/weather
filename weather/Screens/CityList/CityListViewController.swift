@@ -9,22 +9,24 @@
 import SnapKit
 
 class CityListViewController: CustomViewController {
+    
+    @UserDefault("registered_city_ids", value: [Int]())
+    var registeredCities: [Int]?
+    
+    lazy var registeredCityList: UITableView = {
+        let tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        return tableView
+    }()
 
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
+        super.viewDidLoad()        
         // Setup
         setupUI()
+        // Setup Tableview
+        setupTableView()
     
-//        showLoading()
-//        Api.get(using: ApiUrl.cities, model: [City].self, success: { [weak self] (cities) in
-//            for city in cities {
-//                print(city.name)
-//            }
-//            self?.hideLoading()
-//        }) { (error) in
-//            print(error)
-//        }
     }
     
     fileprivate func setupUI() {
@@ -42,6 +44,16 @@ class CityListViewController: CustomViewController {
         ], for: .normal)
     }
     
+    fileprivate func setupTableView(){
+        view.addSubview(registeredCityList)
+        registeredCityList.snp.makeConstraints { (make) in
+            make.width.equalToSuperview()
+            make.height.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.topMargin)
+            make.centerX.equalToSuperview()
+        }
+    }
+    
     @objc
     fileprivate func handleAddButtonAction(){
         let citySelectionViewController = CitySelectionViewController()
@@ -53,4 +65,20 @@ class CityListViewController: CustomViewController {
         
     }
     
+}
+
+// MARK: TableviewDelegate & TableviewDataSource
+extension CityListViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let registeredCities = registeredCities else { return 0 }
+        return registeredCities.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        guard let registeredCities = registeredCities else { return cell }
+        cell.textLabel?.text = "\(registeredCities[indexPath.row])"
+        return cell
+    }
 }
