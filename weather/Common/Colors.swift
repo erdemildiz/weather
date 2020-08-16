@@ -10,6 +10,7 @@ import UIKit
 
 struct Colors {
     
-    static let purplyBlue = UIColor(named: "purplyBlue")
-    static let slate      = UIColor(named: "slate")
+    static let purplyBlue     = UIColor(named: "purplyBlue")
+    static let slate          = UIColor(named: "slate")
+    static let backgroundGray = UIColor(named: "backgroundGray")
 }

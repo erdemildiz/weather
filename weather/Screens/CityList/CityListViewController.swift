@@ -12,11 +12,15 @@ class CityListViewController: CustomViewController {
     
     @UserDefault("registered_city_ids", value: [Int]())
     var registeredCities: [Int]?
+    var isEditActionActive: Bool = false
     
     lazy var registeredCityList: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = Colors.backgroundGray
+        tableView.showsVerticalScrollIndicator = false
         return tableView
     }()
 
@@ -26,11 +30,12 @@ class CityListViewController: CustomViewController {
         setupUI()
         // Setup Tableview
         setupTableView()
-    
+        // Register Cell
+        registerCell()
     }
     
     fileprivate func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.backgroundGray
         title = Constants.cityListPageTitle
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: Icons.plus, style: .done, target: self, action: #selector(handleAddButtonAction))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: Constants.edit, style: .plain, target: self, action: #selector(handleEditButtonAction))
@@ -48,10 +53,14 @@ class CityListViewController: CustomViewController {
         view.addSubview(registeredCityList)
         registeredCityList.snp.makeConstraints { (make) in
             make.width.equalToSuperview()
-            make.height.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide.snp.topMargin)
+            make.bottom.equalTo(-50)
             make.centerX.equalToSuperview()
         }
+    }
+    
+    fileprivate func registerCell() {
+        registeredCityList.register(CityListItemCell.self, forCellReuseIdentifier: CityListItemCell.identifier)
     }
     
     @objc
@@ -62,7 +71,9 @@ class CityListViewController: CustomViewController {
     
     @objc
     fileprivate func handleEditButtonAction(){
-        
+        isEditActionActive.toggle()
+        navigationItem.leftBarButtonItem?.title = isEditActionActive ? Constants.done : Constants.edit
+        registeredCityList.reloadData()
     }
     
 }
@@ -71,14 +82,21 @@ class CityListViewController: CustomViewController {
 extension CityListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let registeredCities = registeredCities else { return 0 }
+        guard let registeredCities = registeredCities else { return 10 }
         return registeredCities.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        guard let registeredCities = registeredCities else { return cell }
-        cell.textLabel?.text = "\(registeredCities[indexPath.row])"
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CityListItemCell.identifier) as? CityListItemCell else { return UITableViewCell() }
+//        guard let registeredCities = registeredCities else { return cell }
+//        cell.textLabel?.text = "\(registeredCities[indexPath.row])"
+        // Edit action control
+        if isEditActionActive {
+            cell.makeEditActionActive()
+        } else {
+            cell.makeEditActionPassive()
+        }
+        
         return cell
     }
 }
