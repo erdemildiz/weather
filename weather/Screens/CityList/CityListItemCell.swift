@@ -73,6 +73,11 @@ class CityListItemCell: UITableViewCell {
     }()
     
     static let identifier = "CityListItemCellIdentifier"
+    var cityInfo: CitiesWeatherListModel? {
+        didSet {
+            fillCityInfos()
+        }
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -83,6 +88,27 @@ class CityListItemCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    fileprivate func fillCityInfos() {
+        guard let cityInfo = cityInfo, cityInfo.weather.count > 0 else { return }
+        guard let weatherImage = determineWeatherImage(weatherDesc: cityInfo.weather.first!.description) else {  return }
+        weatherStatusImage.image = weatherImage
+        cityName.text = String(cityInfo.name.split(separator: " ").first!)
+        degrees.text  = "\(Int(cityInfo.main.temp_max))℃"
+    }
+    
+    fileprivate func determineWeatherImage(weatherDesc: String) -> UIImage? {
+        if weatherDesc == "clear sky" {
+            return Icons.sunny!
+        } else if weatherDesc == "shower rain" || weatherDesc == "rain" {
+            return Icons.rainy!
+        } else if weatherDesc == "thunderstorm" {
+            return Icons.heavyRainy!
+        } else if weatherDesc == "snow" {
+            return Icons.snowy!
+        }
+        return nil
     }
 }
 
@@ -150,7 +176,7 @@ extension CityListItemCell {
             make.height.equalTo(21)
         }
         degrees.snp.makeConstraints { (make) in
-            make.width.equalTo(66)
+            make.width.equalTo(70)
         }
         cityName.snp.makeConstraints { (make) in
             make.left.equalTo(31.5)

@@ -10,8 +10,6 @@ import SnapKit
 
 class CityListViewController: CustomViewController {
     
-    @UserDefault("registered_city_ids", value: [Int]())
-    var registeredCities: [Int]?
     var isEditActionActive: Bool = false
     
     lazy var registeredCityList: UITableView = {
@@ -23,6 +21,7 @@ class CityListViewController: CustomViewController {
         tableView.showsVerticalScrollIndicator = false
         return tableView
     }()
+    let viewModel = CityListViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()        
@@ -32,6 +31,18 @@ class CityListViewController: CustomViewController {
         setupTableView()
         // Register Cell
         registerCell()
+        // Setup cities weather observer
+        addFetchedCitiesWeatherInfosObserver()
+        
+        viewModel.fetchCitiesWeatherInfos()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Check registred cities and fetch weather infos
+        viewModel.fetchCitiesWeatherInfos()
     }
     
     fileprivate func setupUI() {
@@ -76,26 +87,38 @@ class CityListViewController: CustomViewController {
         registeredCityList.reloadData()
     }
     
+    fileprivate func addFetchedCitiesWeatherInfosObserver(){
+        viewModel.citiesWeatherDidLoad = { failure in
+            if !failure {
+                DispatchQueue.main.async {
+                    self.registeredCityList.reloadData()
+                }
+            }
+        }
+    }   
+    
+    
 }
 
 // MARK: TableviewDelegate & TableviewDataSource
 extension CityListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let registeredCities = registeredCities else { return 10 }
-        return registeredCities.count
+        guard let citiesWeathers = viewModel.citiesWeathers else { return 0 }
+        return citiesWeathers.cnt
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CityListItemCell.identifier) as? CityListItemCell else { return UITableViewCell() }
-//        guard let registeredCities = registeredCities else { return cell }
-//        cell.textLabel?.text = "\(registeredCities[indexPath.row])"
         // Edit action control
         if isEditActionActive {
             cell.makeEditActionActive()
         } else {
             cell.makeEditActionPassive()
         }
+        
+        guard let citiesWeathers = viewModel.citiesWeathers else { return cell }
+        cell.cityInfo = citiesWeathers.list[indexPath.row]
         
         return cell
     }

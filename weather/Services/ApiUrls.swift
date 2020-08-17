@@ -9,7 +9,12 @@
 import Foundation
 
 
-struct ApiUrl {
-        
+struct ApiUrl {       
+    
     static let cities = "https://weathercase-99549.firebaseio.com/.json"
+    static func citiesWeather(using ids: [Int]) -> String {
+        let cityIds = ids.map { "\($0)" }.joined(separator: ",")
+        return ApiConfig.getBaseURL() + "group?id=" + cityIds + ApiConfig.getApiPrivateToken()
+    }
 }
+

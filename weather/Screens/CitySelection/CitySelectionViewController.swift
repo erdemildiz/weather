@@ -29,7 +29,7 @@ class CitySelectionViewController: CustomViewController {
     let viewModel = CitySelectionViewModel()
     var selectedCity: CityModel?
     
-    @UserDefault("registered_city_ids", value: [Int]())
+    @Storage("registered_city_ids", defaultValue: [Int]())
     var registeredCityIds: [Int]?
     
     override func viewDidLoad() {
